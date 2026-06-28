@@ -32,7 +32,9 @@ export default function Timeline() {
       case 1:
         return posts.filter((p) => p.type === 'prediction')
       case 2:
-        return posts.filter((p) => p.type === 'capsule' && now >= p.targetDate)
+        return posts
+          .filter((p) => p.type === 'capsule' && now >= p.targetDate)
+          .sort((a, b) => b.targetDate - a.targetDate)
       default:
         return posts
     }
