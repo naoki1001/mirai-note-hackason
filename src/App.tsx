@@ -1,18 +1,18 @@
-import { useState, useCallback } from 'react'
+import { useRef } from 'react'
 import { useMediaQuery } from '@mui/material'
 import { TimeProvider } from './contexts/TimeContext'
 import PostForm from './components/PostForm'
-import Timeline from './components/Timeline'
+import Timeline, { type TimelineHandle } from './components/Timeline'
 import TimeMachine from './components/TimeMachine'
 import MobilePostFab from './components/MobilePostFab'
 
 function App() {
-  const [timelineKey, setTimelineKey] = useState(0)
+  const timelineRef = useRef<TimelineHandle>(null)
   const isMobile = useMediaQuery('(max-width: 768px)')
 
-  const refreshTimeline = useCallback(() => {
-    setTimelineKey((k) => k + 1)
-  }, [])
+  const refreshTimeline = () => {
+    timelineRef.current?.refresh()
+  }
 
   return (
     <TimeProvider>
@@ -28,7 +28,7 @@ function App() {
 
         <main className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-6 pb-24">
           {!isMobile && <PostForm onPost={refreshTimeline} />}
-          <Timeline key={timelineKey} />
+          <Timeline ref={timelineRef} />
         </main>
 
         {isMobile && <MobilePostFab onPost={refreshTimeline} />}
