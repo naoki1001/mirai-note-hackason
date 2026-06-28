@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useImperativeHandle, forwardRef } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Tabs, Tab } from '@mui/material'
 import { Home, Sparkles, Unlock } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -10,11 +10,7 @@ import type { Post } from '../types'
 import PredictionCard from './PredictionCard'
 import CapsuleCard from './CapsuleCard'
 
-export interface TimelineHandle {
-  refresh: () => void
-}
-
-const Timeline = forwardRef<TimelineHandle>(function Timeline(_, ref) {
+export default function Timeline() {
   const { now } = useTime()
   const [posts, setPosts] = useState<Post[]>([])
   const [tab, setTab] = useState(0)
@@ -26,8 +22,6 @@ const Timeline = forwardRef<TimelineHandle>(function Timeline(_, ref) {
     }
     setPosts(loadPosts())
   }, [])
-
-  useImperativeHandle(ref, () => ({ refresh }))
 
   useEffect(() => {
     refresh()
@@ -43,6 +37,12 @@ const Timeline = forwardRef<TimelineHandle>(function Timeline(_, ref) {
         return posts
     }
   }, [posts, tab, now])
+
+  const swipeVariants = {
+    enter: (direction: number) => ({ x: direction > 0 ? 200 : -200, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (direction: number) => ({ x: direction < 0 ? 200 : -200, opacity: 0 }),
+  }
 
   const [[page, direction], setPage] = useState([0, 0])
 
@@ -60,12 +60,6 @@ const Timeline = forwardRef<TimelineHandle>(function Timeline(_, ref) {
       setPage([tab - 1, -1])
       setTab(tab - 1)
     }
-  }
-
-  const swipeVariants = {
-    enter: (d: number) => ({ x: d > 0 ? 200 : -200, opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (d: number) => ({ x: d < 0 ? 200 : -200, opacity: 0 }),
   }
 
   return (
@@ -89,6 +83,7 @@ const Timeline = forwardRef<TimelineHandle>(function Timeline(_, ref) {
         <Tab icon={<Unlock size={16} />} iconPosition="start" label="開封済み" />
       </Tabs>
 
+      <div className="overflow-hidden">
       <AnimatePresence mode="wait" custom={direction}>
         <motion.div
           key={page}
@@ -120,8 +115,9 @@ const Timeline = forwardRef<TimelineHandle>(function Timeline(_, ref) {
           )}
         </motion.div>
       </AnimatePresence>
+      </div>
     </div>
   )
-})
+}
 
-export default Timeline
+export { Timeline }
