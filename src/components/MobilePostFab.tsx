@@ -1,16 +1,7 @@
 import { useState } from 'react'
-import { Fab, Dialog, Slide } from '@mui/material'
+import { Fab, Drawer } from '@mui/material'
 import { Plus, X } from 'lucide-react'
-import { type TransitionProps } from '@mui/material/transitions'
-import { forwardRef } from 'react'
 import PostForm from './PostForm'
-
-const SlideUp = forwardRef(function SlideUp(
-  props: TransitionProps & { children: React.ReactElement },
-  ref: React.Ref<unknown>,
-) {
-  return <Slide direction="up" ref={ref} {...props} />
-})
 
 interface Props {
   onPost: () => void
@@ -44,20 +35,14 @@ export default function MobilePostFab({ onPost }: Props) {
         <Plus size={24} />
       </Fab>
 
-      <Dialog
+      <Drawer
+        anchor="bottom"
         open={open}
         onClose={() => setOpen(false)}
-        fullWidth
-        maxWidth="sm"
-        TransitionComponent={SlideUp}
         PaperProps={{
           sx: {
             borderRadius: '20px 20px 0 0',
-            position: 'fixed',
-            bottom: 0,
-            m: 0,
             maxHeight: '85vh',
-            width: '100%',
           },
         }}
       >
@@ -73,7 +58,7 @@ export default function MobilePostFab({ onPost }: Props) {
           </div>
           <PostForm onPost={handlePost} />
         </div>
-      </Dialog>
+      </Drawer>
     </>
   )
 }
