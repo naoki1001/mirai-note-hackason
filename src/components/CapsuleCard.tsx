@@ -64,7 +64,7 @@ export default function CapsuleCard({ post }: Props) {
             <div className="flex items-center gap-2 mb-3">
               <span className="px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-gray-400 to-gray-500 text-white flex items-center gap-1">
                 <Lock size={12} />
-                封印中
+                タイムカプセル
               </span>
               <span className="px-2 py-0.5 rounded-full text-xs bg-white/80 text-gray-600">
                 {post.category}
