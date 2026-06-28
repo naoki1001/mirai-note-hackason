@@ -23,6 +23,14 @@ const SAMPLE_CAPSULES: { content: string; category: Category; offsetDays: number
   { content: '転職の決断、正しかったと思えていますか？', category: '仕事の未来', offsetDays: 365 },
   { content: '10年後の自分へ。あの頃描いた夢は叶いましたか？', category: '夢・目標', offsetDays: 3650 },
   { content: '今日始めた新しいプロジェクト、どこまで成長した？', category: '技術の未来', offsetDays: 180 },
+  { content: '50年後の世界を生きる誰かへ。2026年の僕たちはAIと共存し始めたばかりです。そちらではどうですか？', category: '社会の未来', offsetDays: 18250 },
+  { content: '半世紀後の自分へ。今日という日を覚えていますか？まだ夢を追いかけていますか？', category: '夢・目標', offsetDays: 18250 },
+]
+
+const PAST_CAPSULES: { content: string; category: Category; createdDaysAgo: number; targetDaysAgo: number }[] = [
+  { content: '3ヶ月後の自分へ。今始めた朝活、続いていますか？', category: '生活の未来', createdDaysAgo: 120, targetDaysAgo: 30 },
+  { content: '半年後の自分へ。あのチームとのプロジェクト、無事リリースできましたか？', category: '仕事の未来', createdDaysAgo: 200, targetDaysAgo: 14 },
+  { content: '1年後の自分へ。英語の勉強、TOEIC800点取れた？', category: '自分の未来', createdDaysAgo: 400, targetDaysAgo: 5 },
 ]
 
 // 過去に作成され、既にターゲット日を過ぎたサンプル
@@ -73,6 +81,18 @@ export function generateSampleData(): Post[] {
       targetDate: now - p.targetDaysAgo * DAY,
       category: p.category,
       content: p.content,
+      reviewStatus: 'none',
+    })
+  }
+
+  for (const c of PAST_CAPSULES) {
+    posts.push({
+      id: generateId(),
+      type: 'capsule' as PostType,
+      createdAt: now - c.createdDaysAgo * DAY,
+      targetDate: now - c.targetDaysAgo * DAY,
+      category: c.category,
+      content: c.content,
       reviewStatus: 'none',
     })
   }
