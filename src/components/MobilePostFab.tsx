@@ -39,10 +39,12 @@ export default function MobilePostFab({ onPost }: Props) {
         anchor="bottom"
         open={open}
         onClose={() => setOpen(false)}
-        PaperProps={{
-          sx: {
-            borderRadius: '20px 20px 0 0',
-            maxHeight: '85vh',
+        slotProps={{
+          paper: {
+            sx: {
+              borderRadius: '20px 20px 0 0',
+              maxHeight: '85vh',
+            },
           },
         }}
       >
